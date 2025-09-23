@@ -1,10 +1,3 @@
-#!/usr/bin/env python3
-"""
-Simulación del oscilador amortiguado usando diferencias finitas (ecuaciones 1.54 y 1.55).
-Genera tablas de resultados, chequeo energético, prueba de convergencia,
-y compara (cuando aplique) con la solución analítica.
-"""
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -42,11 +35,7 @@ def mechanical_energy(m, k, x, v):
     return 0.5*m*v**2 + 0.5*k*x**2
 
 def analytic_solution(m, k, b, x0, v0, t):
-    """
-    Solución analítica del oscilador lineal amortiguado:
-    - Devuelve x_a(t), v_a(t)
-    - Implementa los tres regímenes (sub, crítico, sobre).
-    """
+
     gamma = b / (2.0 * m)
     omega0 = np.sqrt(k / m)
     t = np.asarray(t)
@@ -146,7 +135,7 @@ if __name__ == "__main__":
         E1, E2, E5 = E_dis_values
         print(f"{b:8.6f} | {regime:>22} | {E1:12.6f} | {E2:12.6f} | {E5:12.6f} | {E_mech_initial:12.6f} | {residuo:12.6e}")
 
-        # Comparación con solución analítica si procede (si la solución analítica está bien definida)
+
         try:
             x_a, v_a = analytic_solution(m, k, b, x0, v0, t)
             # error L2 y máximo
@@ -156,7 +145,7 @@ if __name__ == "__main__":
         except Exception as e:
             print("           -> No se pudo calcular solución analítica:", e)
 
-    # Prueba de convergencia para un caso representativo (por ejemplo b = 0.5)
+
     h_list = [1e-2, 5e-3, 2e-3, 1e-3, 5e-4]
     convergence_test(m, k, b=0.5, x0=x0, v0=v0, h_list=h_list, tmax=tmax, tf_check=5.0)
 
@@ -197,7 +186,6 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.show()
 
-    # Si quieres superponer solución analítica en el caso subamortiguado:
     b_show = 0.5
     if b_show in sims:
         t = sims[b_show]["t"]
